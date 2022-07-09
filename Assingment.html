@@ -9,20 +9,50 @@
       .nav {
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: space-between;
         padding: 10px 0;
       }
       div.nav > h4 {
         margin-right: 10px;
       }
+      .sec1,.sec2{
+        display: flex;
+        align-items: center;
+        
+      }
+      .sec1{
+        margin-right: 10px;
+      }
+      .sec2{
+        margin-left: 10px;
+      }
+      .card{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background-color: rgb(219, 92, 60);
+        padding: 5px 0;
+        margin-top:10px
+      }
+      .sec1>div,.sec1>h4{
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
-    <div class="nav">
-      <h4><a href="Assingment.html" target="blank">Assingments</a></h4>
-      <h4><a href="lectur.html" target="blank">Lectur</a></h4>
-      <h4><a href="account.html" target="blank">Accounts</a></h4>
-    </div>
+    <body>
+      <div class="nav">
+        <div class="sec1">
+          <div class="sec2">
+            <button onclick="log_user_out()">LOGOUT</button>
+            <h4 class="currUser"></h4>
+          </div>
+          <h4><a href="Assingment.html" target="blank">Assingments</a></h4>
+          <h4><a href="lectur.html" target="blank">Lectur</a></h4>
+          <h4><a href="account.html" target="blank">Accounts</a></h4>
+        </div>
+  
+      </div>
     <div>
       <button id="add_assing" onclick="add_assing()">add assingment</button>
       <button id="show_assing" onclick="show_assing()">show assingment</button>
@@ -112,4 +142,13 @@
     localStorage.setItem("assingmentdata", JSON.stringify(ass_data));
     display();
   }
+  function log_user_out(){
+  cueeUserLoged=[]
+  window.location.href="index.html"
+ }
+
+
+ let curr=document.querySelector(".currUser")
+  let addminUser=JSON.parse(localStorage.getItem("admandata")) || []
+  curr.innerText=(addminUser[0])
 </script>

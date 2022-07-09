@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+            .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+      }
+      div.nav > h4 {
+        margin-right: 10px;
+      }
+      .sec1,.sec2{
+        display: flex;
+        align-items: center;
+        
+      }
+      .sec1{
+        margin-right: 10px;
+      }
+      .sec2{
+        margin-left: 10px;
+      }
+      .card{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background-color: rgb(219, 92, 60);
+        padding: 5px 0;
+        margin-top:10px
+      }
+      .sec1>div,.sec1>h4{
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <div class="sec1">
+        <div class="sec2">
+          <button onclick="log_user_out()">LOGOUT</button>
+          <h4 class="currUser"></h4>
+        </div>
+        <h4><a href="Assingment.html" target="blank">Assingments</a></h4>
+        <h4><a href="lectur.html" target="blank">Lectur</a></h4>
+        <h4><a href="account.html" target="blank">Accounts</a></h4>
+      </div>
+
+    </div>
+    <div>
+      <button id="add_lectur" onclick="add_lectur()">add Lecture</button>
+      <button id="show_lectur" onclick="show_lectur()">show Lecture</button>
+    </div>
+    <div class="add_lecture">
+      <form onsubmit="addLecture()">
+        <input id="Lname" type="text" placeholder="nmae of Lecture" />
+        <input id="teach" type="text" placeholder="teacher name" />
+        <input id="date" type="date" placeholder="creation date" />
+        <input id="time" type="time" placeholder="time of creation" />
+        <input type="submit" />
+      </form>
+    </div>
+
+    <div class="cont" style="display: none"></div>
+  </body>
+</html>
+<script>
+    let form =document.querySelector("form")
+    let cont=document.querySelector(".cont")
+    let lectarr=JSON.parse(localStorage.getItem("lectData")) || []
+    function add_lectur(){
+        cont.style.display="none"
+        form.style.display="block"
+
+    }
+    function show_lectur(){
+        cont.style.display="block"
+        form.style.display="none"
+        display()
+    }
+    function addLecture(){
+        event.preventDefault()
+        let name=form.Lname.value
+        let teach=form.teach.value
+        let date=form.date.value
+        let time=form.time.value
+        
+        let a1= new Alecture(name,teach,date,time)
+    }
+    class Alecture{
+        constructor(name,teach,date,time){
+            this.name=name
+            this.teach=teach
+            this.date=date
+            this.time=time
+            this.stor()
+        }
+        stor(){
+lectarr.push(this)
+localStorage.setItem("lectData",JSON.stringify(lectarr))
+        }
+
+    }
+    display()
+    function display(){
+        cont.innerHTML=[]
+        lectarr.forEach(function(el,index){
+        let card = document.createElement("div");
+      card.setAttribute("class", "card");
+      let name = document.createElement("p");
+      name.innerText = el.name;
+      let techer = document.createElement("p");
+      techer.innerText = el.teach;
+
+      let date = document.createElement("p");
+      date.innerText = el.date;
+
+      let time = document.createElement("p");
+      time.innerText = el.time;
+
+      let delet_button = document.createElement("button");
+      delet_button.innerText = "Delet";
+      delet_button.addEventListener("click", function () {
+        delet_item(el, index);
+      });
+
+      card.append(name, techer, date, time, delet_button);
+      cont.append(card);
+    });
+    
+    }
+    function delet_item(el, index){
+        lectarr.splice(index,1)
+localStorage.setItem("lectData",JSON.stringify(lectarr))
+display()
+
+    }
+    let curr=document.querySelector(".currUser")
+  let addminUser=JSON.parse(localStorage.getItem("admandata")) || []
+  curr.innerText=(addminUser[0])
+  
+  function log_user_out(){
+  cueeUserLoged=[]
+  window.location.href="index.html"
+ }
+</script>

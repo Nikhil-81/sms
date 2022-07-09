@@ -5,6 +5,94 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+      }
+      div.nav > h4 {
+        margin-right: 10px;
+      }
+      .sec2{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        gap:10px 
+      }
+      .card{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background-color: rgb(219, 92, 60);
+        padding: 5px 0;
+        margin-top:10px
+      }
+  
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="nav">
+      <div class="sec2">
+        <button onclick="log_user_out()">LOGOUT</button>
+        <h4 class="currUser"></h4>
+      </div>
+    </div>
+    <div class="cont"></div>
+  </body>
 </html>
+<script>
+  let curr=document.querySelector(".currUser")
+  let cueeUserLoged=JSON.parse(localStorage.getItem("currUser"))
+  curr.innerText=cueeUserLoged[0]
+ function log_user_out(){
+  cueeUserLoged=[]
+  window.location.href="index.html"
+ }
+ let Adata=JSON.parse(localStorage.getItem("assingmentdata")) || []
+ let Ldata=JSON.parse(localStorage.getItem("lectData")) || []
+ let cont=document.querySelector(".cont")
+display()
+function display(){
+  cont.innerHtml=[]
+  Adata.forEach(function(el){
+    let card = document.createElement("div");
+      card.setAttribute("class", "card");
+      let name = document.createElement("p");
+      name.innerText = el.name;
+      let techer = document.createElement("p");
+      techer.innerText = el.tech;
+
+      let date = document.createElement("p");
+      date.innerText = el.date;
+
+      let time = document.createElement("p");
+      time.innerText = el.time;
+
+      card.append(name, techer, date, time);
+      cont.append(card);
+    });
+    
+    Ldata.forEach(function(el){
+    let card = document.createElement("div");
+      card.setAttribute("class", "card");
+      let name = document.createElement("p");
+      name.innerText = el.name;
+      let techer = document.createElement("p");
+      techer.innerText = el.tech;
+
+      let date = document.createElement("p");
+      date.innerText = el.date;
+
+      let time = document.createElement("p");
+      time.innerText = el.time;
+
+      card.append(name, techer, date, time);
+      cont.append(card);
+    });
+    
+}
+
+
+</script>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+         .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+      }
+      div.nav > h4 {
+        margin-right: 10px;
+      }
+      .sec1,.sec2{
+        display: flex;
+        align-items: center;
+        
+      }
+      .sec1{
+        margin-right: 10px;
+      }
+      .sec2{
+        margin-left: 10px;
+      }
+      .card{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background-color: rgb(219, 92, 60);
+        padding: 5px 0;
+        margin-top:10px
+      }
+      .sec1>div,.sec1>h4{
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <div class="sec1">
+        <div class="sec2">
+          <button onclick="log_user_out()">LOGOUT</button>
+          <h4 class="currUser"></h4>
+        </div>
+        <h4><a href="Assingment.html" target="blank">Assingments</a></h4>
+        <h4><a href="lectur.html" target="blank">Lectur</a></h4>
+        <h4><a href="account.html" target="blank">Accounts</a></h4>
+      </div>
+
+    </div>
+    <div class="add_lecture">
+      <form onsubmit="addUser()">
+        <input id="userName" type="text" placeholder="username" />
+        <input id="userPasscoad" type="text" placeholder="passcoad" />
+        <input type="submit" />
+      </form>
+    </div>
+
+    <div class="cont"></div>
+  </body>
+</html>
+<script>
+let form=document.querySelector("form")
+let cont=document.querySelector(".cont")
+let userArr=JSON.parse(localStorage.getItem("userdatabase")) || []
+let a1;
+function addUser(){
+    event.preventDefault()
+    this.user=form.userName.value
+    this.passcoad=form.userPasscoad.value
+display()
+    a1=new Uaccount(user,passcoad)
+}
+class Uaccount{
+    constructor(user,passcoad){
+        this.user=user
+        this.passcoad=passcoad
+        this.stor()
+    }
+    stor(){
+        userArr.push(this)
+        localStorage.setItem("userdatabase",JSON.stringify(userArr))
+        
+    }
+}
+display()
+function display(){
+    cont.innerHTML=[]
+    userArr.forEach(function(el,index){
+let card=document.createElement("div")
+card.setAttribute("class","card")
+let name=document.createElement("p")
+let passcoad=document.createElement("p")
+let dellbotton=document.createElement("button")
+dellbotton.addEventListener("click",function(){
+    deletItem(el,index)
+})
+dellbotton.innerText="delet"
+name.innerText=el.user
+passcoad.innerText=el.passcoad
+card.append(name,passcoad,dellbotton)
+cont.append(card)
+    })
+}
+
+function deletItem(el,index){
+userArr.splice(index,1)
+localStorage.setItem("userdatabase",JSON.stringify(userArr))
+display()
+}
+let curr=document.querySelector(".currUser")
+  let addminUser=JSON.parse(localStorage.getItem("admandata")) || []
+  curr.innerText=(addminUser[0])
+
+  function log_user_out(){
+  cueeUserLoged=[]
+  window.location.href="index.html"
+ }
+</script>

@@ -5,8 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+   <style>
+  select{
+   width: 500px; 
+  }
+  form{
+    margin-top:15px;
+  }
+  img{
+    width: 50%;
+  }
+   </style>
   </head>
   <body>
+    
     <div>
       <select id="singIn_section" onchange="sing_()">
         <option value="null">singIn</option>
@@ -44,6 +56,7 @@
       <input id="Auser_pass" type="text" placeholder="password" />
       <input type="submit" />
     </form>
+    <img src="https://mma.prnewswire.com/media/1631809/Masai_Logo.jpg?p=facebook"/>
   </body>
 </html>
 <script>
@@ -131,6 +144,8 @@
 
   let data = JSON.parse(localStorage.getItem("userdatabase")) || [];
   let A_data = JSON.parse(localStorage.getItem("admandata")) || [];
+  let u_data = JSON.parse(localStorage.getItem("currUser")) || [];
+
   class user {
     constructor(un, up, new_user, isadmin) {
       this.username = un;
@@ -141,26 +156,42 @@
     }
     check() {
       if (this.new_user == true) {
-        this.new_user = false;
+        console.log(this.new_user)
         this.storuser();
       } else {
+        console.log("ok")
         this.velidetion(this);
+      
       }
     }
     velidetion(obj) {
       data.forEach(function (el) {
-        console.log(el.username, obj.username);
-        console.log(el.password, obj.password);
-        if (el.username == obj.username && el.password == obj.password) {
+        console.log(el.user, obj.username);
+        console.log(el.passcoad, obj.password);
+        if (el.user == obj.username && el.passcoad == obj.password) {
+          u_data = [];
+        localStorage.setItem("currUser", JSON.stringify(u_data));
+        u_data.push(obj.username, obj.password);
+        localStorage.setItem("currUser", JSON.stringify(u_data));
+        console.log(u_data)
           window.location.href = "coures.html";
           return;
         }
       });
     }
     storuser() {
+      this.new_user = false;
+      console.log("hello")
       data.push(this);
+      u_data = [];
+      localStorage.setItem("currUser", JSON.stringify(u_data));
+     let un=this.username;
+     let up=this.password;
+      u_data.push(un,up)
       localStorage.setItem("userdatabase", JSON.stringify(data));
+      localStorage.setItem("currUser", JSON.stringify(u_data));
       window.location.href = "coures.html";
+
     }
   }
   admin_user = "admin";
