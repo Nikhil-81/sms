@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <select id="singIn_section" onchange="sing_()">
+        <option value="null">singIn</option>
+        <option value="sing_u">sing_in as user</option>
+        <option value="sing_a">sing_in as admin</option>
+      </select>
+      <select id="login_section" onchange="Log_()">
+        <option value="null">LogIn</option>
+        <option value="log_u">log_in as user</option>
+        <option value="log_a">log_in as admin</option>
+      </select>
+    </div>
+
+    <form id="form_singin_user" style="display: none">
+      <input id="user_name" type="text" placeholder="name" />
+      <input id="user_batch" type="text" placeholder="batch" />
+      <input id="user_username" type="text" placeholder="username" />
+      <input id="user_pass" type="text" placeholder="password" />
+      <input type="submit" />
+    </form>
+    <form id="form_singin_admin" style="display: none">
+      <input id="admin_name" type="text" placeholder="name" />
+      <input id="admin_id" type="text" placeholder="admin_code" />
+      <input id="admin_username" type="text" placeholder="username" />
+      <input id="admin_pass" type="text" placeholder="password" />
+      <input type="submit" />
+    </form>
+    <form id="form_login_user" style="display: none">
+      <input id="Luser_name" type="text" placeholder="username" />
+      <input id="Luser_pass" type="text" placeholder="password" />
+      <input type="submit" />
+    </form>
+    <form id="form_login_admin" style="display: none">
+      <input id="Auser_name" type="text" placeholder="username" />
+      <input id="Auser_pass" type="text" placeholder="password" />
+      <input type="submit" />
+    </form>
+  </body>
+</html>
+<script>
+  let s1;
+  let sing_selection = document.querySelector("#singIn_section");
+  let login_selection = document.querySelector("#login_section");
+
+  let Fus = document.querySelector("#form_singin_user");
+  Fus.addEventListener("submit", newuser);
+  let Fas = document.querySelector("#form_singin_admin");
+  Fas.addEventListener("submit", newadmin);
+
+  let Ful = document.querySelector("#form_login_user");
+  Ful.addEventListener("submit", userlog);
+
+  let Fal = document.querySelector("#form_login_admin");
+  Fal.addEventListener("submit", adminlog);
+
+  function sing_() {
+    if (sing_selection.value == "sing_u") {
+      Fus.style.display = "block";
+      Fas.style.display = "none";
+      Fal.style.display = "none";
+      Ful.style.display = "none";
+    } else {
+      Fus.style.display = "none";
+      Fas.style.display = "block";
+      Fal.style.display = "none";
+      Ful.style.display = "none";
+    }
+  }
+  function Log_() {
+    console.log(login_selection.value);
+    if (login_selection.value == "log_u") {
+      Fus.style.display = "none";
+      Fas.style.display = "none";
+      Fal.style.display = "none";
+      Ful.style.display = "block";
+    } else {
+      Fus.style.display = "none";
+      Fas.style.display = "none";
+      Fal.style.display = "block";
+      Ful.style.display = "none";
+    }
+  }
+
+  function newuser(event) {
+    event.preventDefault();
+    let un = Fus.user_username.value;
+    let up = Fus.user_pass.value;
+    let new_user = true;
+    isadmin = false;
+
+    let u = new user(un, up, new_user, isadmin);
+  }
+
+  function newadmin() {
+    event.preventDefault();
+    let un = Fas.admin_username.value;
+    let up = Fas.admin_pass.value;
+    let new_user = true;
+    let isadmin = true;
+
+    let a = new admin(un, up, new_user, isadmin);
+  }
+
+  function userlog() {
+    event.preventDefault();
+    let un = Ful.Luser_name.value;
+    let up = Ful.Luser_pass.value;
+    let new_user = false;
+    let isadmin = false;
+    // s1 = new objcreat(un, up, new_user, isadmin);
+    let u = new user(un, up, new_user, isadmin);
+  }
+
+  function adminlog() {
+    event.preventDefault();
+    let un = Fal.Auser_name.value;
+    let up = Fal.Auser_pass.value;
+    let new_user = false;
+    let isadmin = true;
+    let a = new admin(un, up, new_user, isadmin);
+  }
+
+  let data = JSON.parse(localStorage.getItem("userdatabase")) || [];
+  let A_data = JSON.parse(localStorage.getItem("admandata")) || [];
+  class user {
+    constructor(un, up, new_user, isadmin) {
+      this.username = un;
+      this.password = up;
+      this.new_user = new_user;
+      this.isadmin = isadmin;
+      this.check();
+    }
+    check() {
+      if (this.new_user == true) {
+        this.new_user = false;
+        this.storuser();
+      } else {
+        this.velidetion(this);
+      }
+    }
+    velidetion(obj) {
+      data.forEach(function (el) {
+        console.log(el.username, obj.username);
+        console.log(el.password, obj.password);
+        if (el.username == obj.username && el.password == obj.password) {
+          window.location.href = "coures.html";
+          return;
+        }
+      });
+    }
+    storuser() {
+      data.push(this);
+      localStorage.setItem("userdatabase", JSON.stringify(data));
+      window.location.href = "coures.html";
+    }
+  }
+  admin_user = "admin";
+  admin_password = "admin123";
+  class admin {
+    constructor(un, up, new_user, isadmin) {
+      this.username = un;
+      this.password = up;
+      this.new_user = new_user;
+      this.isadmin = isadmin;
+      this.check();
+    }
+    check() {
+      if (this.new_user == true) {
+        admin_user = this.username;
+        admin_password = this.password;
+        A_data = [];
+        localStorage.setItem("admandata", JSON.stringify(A_data));
+        A_data.push(admin_user, admin_password);
+        localStorage.setItem("admandata", JSON.stringify(A_data));
+        window.location.href = "admin.html";
+      } else {
+        this.validedion(this);
+      }
+    }
+    validedion(obj) {
+      if (obj.username == admin_user && obj.password == admin_password) {
+        A_data = [];
+        localStorage.setItem("admandata", JSON.stringify(A_data));
+        A_data.push(admin_user, admin_password);
+        localStorage.setItem("admandata", JSON.stringify(A_data));
+        window.location.href = "admin.html";
+      }
+    }
+  }
+</script>
+<!-- isadmin: false
+new_user: true
+password: "123"
+username: "swaruop" -->
